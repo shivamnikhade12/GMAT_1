@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMAT Question Solver</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; }
+        .option { display: block; margin: 10px 0; cursor: pointer; }
+        .timer { font-size: 18px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>GMAT Question</h2>
+        <div class="timer">Time: <span id="time">0</span> sec</div>
+        <p id="question">Loading...</p>
+        <div id="options"></div>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "What is 2 + 2?", options: ["3", "4", "5", "6"], answer: "4" },
+            { q: "What is 5 x 3?", options: ["8", "15", "10", "20"], answer: "15" }
+        ];
+        
+        let currentIndex = 0;
+        let startTime;
+
+        function loadQuestion() {
+            if (currentIndex >= questions.length) {
+                document.querySelector(".container").innerHTML = "<h2>Completed!</h2>";
+                return;
+            }
+            
+            startTime = new Date().getTime();
+            document.getElementById("time").textContent = "0";
+            document.getElementById("question").textContent = questions[currentIndex].q;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            
+            questions[currentIndex].options.forEach(option => {
+                const btn = document.createElement("button");
+                btn.textContent = option;
+                btn.className = "option";
+                btn.onclick = () => selectOption(option);
+                optionsDiv.appendChild(btn);
+            });
+        }
+        
+        function selectOption(option) {
+            let endTime = new Date().getTime();
+            let timeTaken = Math.round((endTime - startTime) / 1000);
+            alert(`You took ${timeTaken} seconds.`);
+            nextQuestion();
+        }
+        
+        function nextQuestion() {
+            currentIndex++;
+            loadQuestion();
+        }
+        
+        loadQuestion();
+    </script>
+</body>
+</html>
